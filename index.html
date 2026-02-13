@@ -1,0 +1,1023 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily GK Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #1E5BFF, #A84DFF);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .pin-format-info {
+            background: #e7f3ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #0066cc;
+            border-left: 4px solid #0066cc;
+        }
+
+        .login-section, .student-section, .teacher-section, .password-change-section, .teacher-login-section {
+            display: none;
+        }
+
+        .login-section.active, .student-section.active, .teacher-section.active, .password-change-section.active, .teacher-login-section.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="text"], input[type="password"], input[type="tel"], input[type="file"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .secondary-btn {
+            background: #6c757d;
+            margin-top: 10px;
+        }
+
+        .warning-btn {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .question-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .answer-box {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .answer-box h4 {
+            color: #28a745;
+            margin-bottom: 8px;
+        }
+
+        .student-answer {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .student-answer strong {
+            color: #667eea;
+        }
+
+        .date-info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-mode {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .toggle-mode a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toggle-mode a:hover {
+            text-decoration: underline;
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .warning-msg {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ffeeba;
+        }
+
+        .timer-info {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .media-box {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .media-box h4 {
+            color: #ff9800;
+            margin-bottom: 10px;
+        }
+
+        .opinion-box {
+            background: #e8f5e9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 3px solid #4caf50;
+        }
+
+        .opinion-box strong {
+            color: #2e7d32;
+        }
+
+        .phone-list {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .phone-item {
+            background: white;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .media-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Student Login Section -->
+        <div id="loginSection" class="login-section active">
+            <h1>📚 Daily GK Quiz</h1>
+            <p class="subtitle">Learn something new every day!</p>
+            
+            <div class="pin-format-info">
+                📌 <strong>PIN Format:</strong> YYYYY-BB-XXX<br>
+                <strong>YYYYY:</strong> Year (22007-30007) | <strong>BB:</strong> Branch (CS/EE/ME/EI/CE/EC) | <strong>XXX:</strong> Roll No. (001-999)<br>
+                Example: <strong>23007-CS-001</strong>
+            </div>
+
+            <div class="input-group">
+                <label for="studentName">👤 Your Name:</label>
+                <input type="text" id="studentName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="input-group">
+                <label for="studentPhone">📱 Phone Number:</label>
+                <input type="tel" id="studentPhone" placeholder="Enter 10-digit phone number" maxlength="10" required>
+            </div>
+
+            <div class="input-group">
+                <label for="loginPin">🔐 Your PIN (YYYYY-BB-XXX):</label>
+                <input type="text" id="loginPin" placeholder="e.g., 23007-CS-001" maxlength="13" required>
+            </div>
+
+            <button onclick="studentLogin()">Login as Student</button>
+            
+            <div class="toggle-mode">
+                Are you a teacher? <a onclick="showTeacherLogin()">Login here</a>
+            </div>
+        </div>
+
+        <!-- Teacher Login Section -->
+        <div id="teacherLoginSection" class="teacher-login-section">
+            <h1>👨‍🏫 Teacher Login</h1>
+            <p class="subtitle">Manage daily questions and view student responses</p>
+
+            <div class="input-group">
+                <label for="teacherPassword">🔐 Teacher Password:</label>
+                <input type="password" id="teacherPassword" placeholder="Enter password">
+            </div>
+
+            <button onclick="teacherLogin()">Login as Teacher</button>
+            
+            <div class="toggle-mode">
+                Are you a student? <a onclick="showStudentLogin()">Login here</a>
+            </div>
+        </div>
+
+        <!-- Student Section -->
+        <div id="studentSection" class="student-section">
+            <h2>👨‍🎓 Student Dashboard</h2>
+            <p class="subtitle">Welcome, <strong id="studentNameDisplay"></strong>!</p>
+            
+            <div id="studentContent"></div>
+            
+            <button class="secondary-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Teacher Section -->
+        <div id="teacherSection" class="teacher-section">
+            <h2>👨‍🏫 Teacher Dashboard</h2>
+            
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('questions')">Questions</button>
+                <button class="tab-btn" onclick="switchTab('media')">Media Files</button>
+                <button class="tab-btn" onclick="switchTab('phones')">Phone Numbers</button>
+            </div>
+
+            <!-- Questions Tab -->
+            <div id="questionsTab" class="tab-content active">
+                <div class="question-box">
+                    <h3>📝 Post New Question</h3>
+                    <div class="input-group">
+                        <label>Today's Question:</label>
+                        <textarea id="newQuestion" placeholder="Enter today's question..."></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Yesterday's Answer (Optional):</label>
+                        <textarea id="yesterdayAnswer" placeholder="Enter answer to yesterday's question..."></textarea>
+                    </div>
+                    
+                    <button onclick="postQuestion()">Post Question</button>
+                </div>
+                
+                <div id="teacherContent"></div>
+            </div>
+
+            <!-- Media Files Tab -->
+            <div id="mediaTab" class="tab-content">
+                <div class="media-box">
+                    <h3>🎵 Upload Media & Give Opinion</h3>
+                    <div class="input-group">
+                        <label>Upload Image or Audio:</label>
+                        <input type="file" id="mediaFile" accept="image/*,audio/*" onchange="previewMedia()">
+                    </div>
+                    
+                    <div id="mediaPreview"></div>
+                    
+                    <div class="input-group">
+                        <label>Your Opinion/Description:</label>
+                        <textarea id="mediaOpinion" placeholder="Share your opinion about this media..."></textarea>
+                    </div>
+                    
+                    <button onclick="uploadMedia()">Upload & Post</button>
+                </div>
+
+                <div id="mediaList"></div>
+            </div>
+
+            <!-- Phone Numbers Tab -->
+            <div id="phonesTab" class="tab-content">
+                <div class="phone-list">
+                    <h3>📱 Student Phone Numbers</h3>
+                    <div id="phoneNumbersList"></div>
+                </div>
+            </div>
+
+            <button class="secondary-btn" onclick="logout()">Logout</button>
+            <button class="warning-btn" onclick="showPasswordChange()">Change Password</button>
+        </div>
+
+        <!-- Password Change Section -->
+        <div id="passwordChangeSection" class="password-change-section">
+            <h2>🔐 Change Password</h2>
+            
+            <div class="input-group">
+                <label for="currentPassword">Current Password:</label>
+                <input type="password" id="currentPassword">
+            </div>
+            
+            <div class="input-group">
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword">
+            </div>
+            
+            <div class="input-group">
+                <label for="confirmPassword">Confirm New Password:</label>
+                <input type="password" id="confirmPassword">
+            </div>
+            
+            <button onclick="changePassword()">Change Password</button>
+            <button class="secondary-btn" onclick="cancelPasswordChange()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let questions = JSON.parse(localStorage.getItem('questions')) || [];
+        let studentAnswers = JSON.parse(localStorage.getItem('studentAnswers')) || [];
+        let answerTimestamps = JSON.parse(localStorage.getItem('answerTimestamps')) || {};
+        let teacherPassword = localStorage.getItem('teacherPassword') || 'teacher123';
+        let mediaFiles = JSON.parse(localStorage.getItem('mediaFiles')) || [];
+        let studentPhones = JSON.parse(localStorage.getItem('studentPhones')) || {};
+        
+        let currentStudent = null;
+        let currentStudentName = null;
+        let currentTab = 'questions';
+
+        function showStudentLogin() {
+            document.getElementById('teacherLoginSection').classList.remove('active');
+            document.getElementById('loginSection').classList.add('active');
+        }
+
+        function showTeacherLogin() {
+            document.getElementById('loginSection').classList.remove('active');
+            document.getElementById('teacherLoginSection').classList.add('active');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (tab === 'questions') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('questionsTab').classList.add('active');
+                displayTeacherView();
+            } else if (tab === 'media') {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('mediaTab').classList.add('active');
+                displayMediaList();
+            } else if (tab === 'phones') {
+                document.querySelectorAll('.tab-btn')[2].classList.add('active');
+                document.getElementById('phonesTab').classList.add('active');
+                displayPhoneNumbers();
+            }
+        }
+
+        function studentLogin() {
+            const name = document.getElementById('studentName').value.trim();
+            const phone = document.getElementById('studentPhone').value.trim();
+            const pin = document.getElementById('loginPin').value.trim();
+            
+            if (!name) {
+                alert('Please enter your name!');
+                return;
+            }
+
+            if (!phone || phone.length !== 10 || !/^\d{10}$/.test(phone)) {
+                alert('Please enter a valid 10-digit phone number!');
+                return;
+            }
+            
+            if (!pin) {
+                alert('Please enter your PIN!');
+                return;
+            }
+            
+            // Validate PIN format: YYYYY-BB-XXX
+            const pinPattern = /^(\d{5})-([A-Z]{2})-(\d{3})$/;
+            const match = pin.match(pinPattern);
+            
+            if (!match) {
+                alert('Invalid PIN format! Please use format: YYYYY-BB-XXX\nExample: 23007-CS-001');
+                return;
+            }
+            
+            const yyyy = match[1];
+            const bb = match[2];
+            const xxx = match[3];
+            
+            // Validate YYYY (year codes)
+            const validYears = ['22007', '23007', '24007', '25007', '26007', '27007', '28007', '29007', '30007'];
+            if (!validYears.includes(yyyy)) {
+                alert('Invalid year code (YYYYY)!\n\nAllowed values: 22007, 23007, 24007, 25007, 26007, 27007, 28007, 29007, 30007');
+                return;
+            }
+            
+            // Validate BB (branch codes)
+            const validBranches = ['CS', 'EE', 'ME', 'EI', 'CE', 'EC'];
+            if (!validBranches.includes(bb)) {
+                alert('Invalid branch code (BB)!\n\nAllowed values: CS, EE, ME, EI, CE, EC');
+                return;
+            }
+            
+            // Validate XXX (001-999)
+            const rollNum = parseInt(xxx);
+            if (rollNum < 1 || rollNum > 999) {
+                alert('Invalid roll number (XXX)!\n\nMust be between 001 and 999');
+                return;
+            }
+            
+            currentStudent = pin;
+            currentStudentName = name;
+            
+            // Store phone number
+            studentPhones[pin] = {
+                name: name,
+                phone: phone,
+                lastLogin: new Date().toLocaleString()
+            };
+            localStorage.setItem('studentPhones', JSON.stringify(studentPhones));
+            
+            document.getElementById('studentNameDisplay').textContent = name;
+            document.getElementById('loginSection').classList.remove('active');
+            document.getElementById('studentSection').classList.add('active');
+            
+            displayStudentView();
+        }
+
+        function teacherLogin() {
+            const password = document.getElementById('teacherPassword').value;
+            
+            if (password === teacherPassword) {
+                document.getElementById('teacherLoginSection').classList.remove('active');
+                document.getElementById('teacherSection').classList.add('active');
+                switchTab('questions');
+            } else {
+                alert('Incorrect password!');
+            }
+        }
+
+        function showPasswordChange() {
+            document.getElementById('teacherSection').classList.remove('active');
+            document.getElementById('passwordChangeSection').classList.add('active');
+        }
+
+        function cancelPasswordChange() {
+            document.getElementById('passwordChangeSection').classList.remove('active');
+            document.getElementById('teacherSection').classList.add('active');
+            
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        function changePassword() {
+            const current = document.getElementById('currentPassword').value;
+            const newPwd = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            if (current !== teacherPassword) {
+                alert('Current password is incorrect!');
+                return;
+            }
+            
+            if (!newPwd || newPwd.length < 6) {
+                alert('New password must be at least 6 characters!');
+                return;
+            }
+            
+            if (newPwd !== confirm) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            teacherPassword = newPwd;
+            localStorage.setItem('teacherPassword', teacherPassword);
+
+            alert('Password changed successfully!');
+            cancelPasswordChange();
+        }
+
+        function logout() {
+            currentStudent = null;
+            currentStudentName = null;
+            
+            document.getElementById('studentSection').classList.remove('active');
+            document.getElementById('teacherSection').classList.remove('active');
+            document.getElementById('passwordChangeSection').classList.remove('active');
+            document.getElementById('loginSection').classList.add('active');
+            
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentPhone').value = '';
+            document.getElementById('loginPin').value = '';
+            document.getElementById('teacherPassword').value = '';
+        }
+
+        function canSubmitAnswer(studentPin, questionId) {
+            const key = studentPin + '_' + questionId;
+            const lastSubmission = answerTimestamps[key];
+            
+            if (!lastSubmission) {
+                return { canSubmit: true };
+            }
+            
+            const sixHours = 6 * 60 * 60 * 1000;
+            const timePassed = Date.now() - lastSubmission;
+            
+            if (timePassed >= sixHours) {
+                return { canSubmit: true };
+            }
+            
+            const remainingMs = sixHours - timePassed;
+            const hours = Math.floor(remainingMs / (60 * 60 * 1000));
+            const minutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
+            
+            return {
+                canSubmit: false,
+                remainingTime: { hours, minutes }
+            };
+        }
+
+        function cleanupOldAnswers() {
+            const sevenDays = 7 * 24 * 60 * 60 * 1000;
+            const now = Date.now();
+            
+            studentAnswers = studentAnswers.filter(answer => {
+                if (!answer.timestamp) return true;
+                return (now - answer.timestamp) < sevenDays;
+            });
+            
+            localStorage.setItem('studentAnswers', JSON.stringify(studentAnswers));
+        }
+
+        function postQuestion() {
+            const questionText = document.getElementById('newQuestion').value.trim();
+            const answerText = document.getElementById('yesterdayAnswer').value.trim();
+            
+            if (!questionText) {
+                alert('Please enter a question!');
+                return;
+            }
+
+            if (answerText && questions.length > 0) {
+                questions[questions.length - 1].answer = answerText;
+            }
+            
+            questions.push({
+                id: Date.now(),
+                question: questionText,
+                date: new Date().toLocaleDateString(),
+                answer: null
+            });
+            
+            localStorage.setItem('questions', JSON.stringify(questions));
+            
+            document.getElementById('newQuestion').value = '';
+            document.getElementById('yesterdayAnswer').value = '';
+            
+            alert('Question posted successfully!');
+            displayTeacherView();
+        }
+
+        function submitAnswer(questionId) {
+            const answerInput = document.getElementById('answer-' + questionId);
+            const answerText = answerInput.value.trim();
+            
+            if (!answerText) {
+                alert('Please write an answer!');
+                return;
+            }
+            
+            const timeCheck = canSubmitAnswer(currentStudent, questionId);
+            
+            if (!timeCheck.canSubmit) {
+                alert('You can only submit one answer every 6 hours!\n\nPlease wait ' + 
+                      timeCheck.remainingTime.hours + ' hours and ' + 
+                      timeCheck.remainingTime.minutes + ' minutes before submitting again.');
+                return;
+            }
+            
+            const key = currentStudent + '_' + questionId;
+            answerTimestamps[key] = Date.now();
+            localStorage.setItem('answerTimestamps', JSON.stringify(answerTimestamps));
+            
+            studentAnswers.push({
+                questionId: questionId,
+                studentPin: currentStudent,
+                studentName: currentStudentName,
+                answer: answerText,
+                date: new Date().toLocaleString(),
+                timestamp: Date.now()
+            });
+            
+            localStorage.setItem('studentAnswers', JSON.stringify(studentAnswers));
+            
+            alert('Answer submitted successfully!\n\nYou can submit your next answer in 6 hours.');
+            displayStudentView();
+        }
+
+        function previewMedia() {
+            const fileInput = document.getElementById('mediaFile');
+            const preview = document.getElementById('mediaPreview');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                preview.innerHTML = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                if (file.type.startsWith('image/')) {
+                    preview.innerHTML = '<img src="' + e.target.result + '" class="media-preview" alt="Preview">';
+                } else if (file.type.startsWith('audio/')) {
+                    preview.innerHTML = '<audio controls class="media-preview"><source src="' + e.target.result + '" type="' + file.type + '"></audio>';
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function uploadMedia() {
+            const fileInput = document.getElementById('mediaFile');
+            const opinion = document.getElementById('mediaOpinion').value.trim();
+            
+            if (!fileInput.files[0]) {
+                alert('Please select a media file!');
+                return;
+            }
+            
+            if (!opinion) {
+                alert('Please share your opinion about the media!');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                mediaFiles.push({
+                    id: Date.now(),
+                    type: file.type.startsWith('image/') ? 'image' : 'audio',
+                    data: e.target.result,
+                    fileName: file.name,
+                    opinion: opinion,
+                    date: new Date().toLocaleString()
+                });
+                
+                localStorage.setItem('mediaFiles', JSON.stringify(mediaFiles));
+                
+                fileInput.value = '';
+                document.getElementById('mediaOpinion').value = '';
+                document.getElementById('mediaPreview').innerHTML = '';
+                
+                alert('Media uploaded successfully!');
+                displayMediaList();
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function displayMediaList() {
+            const container = document.getElementById('mediaList');
+            
+            if (mediaFiles.length === 0) {
+                container.innerHTML = '<p class="date-info">No media files uploaded yet.</p>';
+                return;
+            }
+            
+            let html = '<h3 style="margin-top: 20px; color: #667eea;">📁 Uploaded Media Files</h3>';
+            
+            mediaFiles.reverse().forEach(media => {
+                html += '<div class="media-box">';
+                html += '<div class="date-info">📅 ' + media.date + '</div>';
+                html += '<h4>📎 ' + media.fileName + '</h4>';
+                
+                if (media.type === 'image') {
+                    html += '<img src="' + media.data + '" class="media-preview" alt="' + media.fileName + '">';
+                } else {
+                    html += '<audio controls style="width: 100%; margin-top: 10px;"><source src="' + media.data + '"></audio>';
+                }
+                
+                html += '<div class="opinion-box">';
+                html += '<strong>Teacher\'s Opinion:</strong><br>';
+                html += media.opinion;
+                html += '</div>';
+                html += '</div>';
+            });
+            
+            mediaFiles.reverse();
+            container.innerHTML = html;
+        }
+
+        function displayPhoneNumbers() {
+            const container = document.getElementById('phoneNumbersList');
+            
+            const phoneList = Object.entries(studentPhones);
+            
+            if (phoneList.length === 0) {
+                container.innerHTML = '<p class="date-info">No student phone numbers available yet.</p>';
+                return;
+            }
+            
+            let html = '<div style="margin-bottom: 10px; color: #666;"><strong>Total Students: ' + phoneList.length + '</strong></div>';
+            
+            phoneList.forEach(([pin, data]) => {
+                html += '<div class="phone-item">';
+                html += '<div>';
+                html += '<strong>' + data.name + '</strong><br>';
+                html += '<span style="color: #666; font-size: 14px;">PIN: ' + pin + '</span><br>';
+                html += '<span style="color: #666; font-size: 13px;">Last Login: ' + data.lastLogin + '</span>';
+                html += '</div>';
+                html += '<div style="font-size: 18px; color: #667eea; font-weight: 600;">';
+                html += '📱 ' + data.phone;
+                html += '</div>';
+                html += '</div>';
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function displayStudentView() {
+            cleanupOldAnswers();
+            
+            const content = document.getElementById('studentContent');
+            
+            let html = '';
+            
+            // Display media files
+            if (mediaFiles.length > 0) {
+                html += '<div class="media-box">';
+                html += '<h3>🎵 Latest Media from Teacher</h3>';
+                
+                const latestMedia = mediaFiles[mediaFiles.length - 1];
+                html += '<div class="date-info">📅 ' + latestMedia.date + '</div>';
+                html += '<h4>📎 ' + latestMedia.fileName + '</h4>';
+                
+                if (latestMedia.type === 'image') {
+                    html += '<img src="' + latestMedia.data + '" class="media-preview" alt="' + latestMedia.fileName + '">';
+                } else {
+                    html += '<audio controls style="width: 100%; margin-top: 10px;"><source src="' + latestMedia.data + '"></audio>';
+                }
+                
+                html += '<div class="opinion-box">';
+                html += '<strong>Teacher\'s Opinion:</strong><br>';
+                html += latestMedia.opinion;
+                html += '</div>';
+                html += '</div>';
+            }
+            
+            if (questions.length === 0) {
+                html += '<p class="date-info">No questions available yet. Check back tomorrow!</p>';
+                content.innerHTML = html;
+                return;
+            }
+            
+            const latestQuestion = questions[questions.length - 1];
+            const hasAnswered = studentAnswers.some(a => 
+                a.questionId === latestQuestion.id && a.studentPin === currentStudent
+            );
+            
+            const timeCheck = canSubmitAnswer(currentStudent, latestQuestion.id);
+            
+            html += '<div class="question-box">';
+            html += '<div class="date-info">📅 ' + latestQuestion.date + '</div>';
+            html += '<h3>Today\'s Question:</h3>';
+            html += '<p>' + latestQuestion.question + '</p>';
+            
+            if (hasAnswered) {
+                const myAnswer = studentAnswers.find(a => 
+                    a.questionId === latestQuestion.id && a.studentPin === currentStudent
+                );
+                html += '<div class="success-msg">✓ You answered on: ' + myAnswer.date + '<br><strong>Your answer:</strong> ' + myAnswer.answer + '</div>';
+                
+                if (!timeCheck.canSubmit) {
+                    html += '<div class="warning-msg">⏱ You can submit a new answer in ' + 
+                            timeCheck.remainingTime.hours + ' hours and ' + 
+                            timeCheck.remainingTime.minutes + ' minutes.</div>';
+                }
+            } else {
+                if (timeCheck.canSubmit) {
+                    html += '<div class="input-group" style="margin-top: 15px;">';
+                    html += '<label>Your Answer:</label>';
+                    html += '<textarea id="answer-' + latestQuestion.id + '" placeholder="Type your answer here..."></textarea>';
+                    html += '</div>';
+                    html += '<button onclick="submitAnswer(' + latestQuestion.id + ')">Submit Answer</button>';
+                    html += '<div class="timer-info">⏱ After submitting, you can answer again after 6 hours.</div>';
+                } else {
+                    html += '<div class="warning-msg">⏱ You submitted an answer recently. You can submit again in ' + 
+                            timeCheck.remainingTime.hours + ' hours and ' + 
+                            timeCheck.remainingTime.minutes + ' minutes.</div>';
+                }
+            }
+            
+            html += '</div>';
+            
+            if (questions.length > 1) {
+                const previousQuestion = questions[questions.length - 2];
+                if (previousQuestion.answer) {
+                    html += '<div class="answer-box">';
+                    html += '<div class="date-info">📅 ' + previousQuestion.date + '</div>';
+                    html += '<h4>Previous Question:</h4>';
+                    html += '<p style="margin-bottom: 10px;">' + previousQuestion.question + '</p>';
+                    html += '<h4>✓ Answer:</h4>';
+                    html += '<p>' + previousQuestion.answer + '</p>';
+                    html += '</div>';
+                }
+            }
+            
+            content.innerHTML = html;
+        }
+
+        function displayTeacherView() {
+            cleanupOldAnswers();
+            
+            const content = document.getElementById('teacherContent');
+            
+            if (questions.length === 0) {
+                content.innerHTML = '<p class="date-info">No questions posted yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            
+            const latestQuestion = questions[questions.length - 1];
+            const answersForQuestion = studentAnswers.filter(a => a.questionId === latestQuestion.id);
+            
+            html += '<div class="question-box">';
+            html += '<div class="date-info">📅 ' + latestQuestion.date + '</div>';
+            html += '<h3>Current Question:</h3>';
+            html += '<p>' + latestQuestion.question + '</p>';
+            html += '<p style="margin-top: 10px; color: #666;"><strong>Responses: ' + answersForQuestion.length + '</strong></p>';
+            html += '</div>';
+            
+            if (answersForQuestion.length > 0) {
+                answersForQuestion.forEach(answer => {
+                    html += '<div class="student-answer">';
+                    html += '<strong>Name: ' + (answer.studentName || 'N/A') + '</strong>';
+                    html += '<br><strong>PIN: ' + answer.studentPin + '</strong>';
+                    
+                    // Show phone number if available
+                    if (studentPhones[answer.studentPin]) {
+                        html += '<br><strong>📱 Phone: ' + studentPhones[answer.studentPin].phone + '</strong>';
+                    }
+                    
+                    html += '<div class="date-info" style="margin: 5px 0;">Submitted: ' + answer.date + '</div>';
+                    html += '<p style="margin-top: 8px;">' + answer.answer + '</p>';
+                    html += '</div>';
+                });
+            } else {
+                html += '<p class="date-info">No student responses yet.</p>';
+            }
+            
+            content.innerHTML = html;
+        }
+
+        if (currentStudent) {
+            displayStudentView();
+        }
+    </script>
+</body>
+</html>
