@@ -1,48 +1,28 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 
+app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname));
 
 let questions = [];
-let studentAnswers = [];
-let studentPhones = {};
-let mediaFiles = [];
-
-app.post("/post-question", (req, res) => {
-  questions.push(req.body);
-  res.json({ message: "Question saved" });
-});
 
 app.get("/questions", (req, res) => {
-  res.json(questions);
+    res.json(questions);
 });
 
-app.post("/submit-answer", (req, res) => {
-  studentAnswers.push(req.body);
-  res.json({ message: "Answer saved" });
+app.post("/questions", (req, res) => {
+    const { question, answer } = req.body;
+    questions.push({
+        id: Date.now(),
+        question,
+        answer: null,
+        date: new Date().toLocaleString()
+    });
+    res.json({ success: true });
 });
 
-app.get("/answers", (req, res) => {
-  res.json(studentAnswers);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server running on " + PORT));
 
-app.post("/save-phone", (req, res) => {
-  studentPhones[req.body.pin] = req.body;
-  res.json({ message: "Phone saved" });
-});
-
-app.get("/phones", (req, res) => {
-  res.json(studentPhones);
-});
-
-app.post("/upload-media", (req, res) => {
-  mediaFiles.push(req.body);
-  res.json({ message: "Media saved" });
-});
-
-app.get("/media", (req, res) => {
-  res.json(mediaFiles);
-});
-
-app.listen(3000, () => console.log("Server running on port 3000"));
+ 
