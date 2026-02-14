@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html lang<="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily GK Quiz</title>
+    <title>DEESAAT QUIZ</title>
     <style>
         * {
             margin: 0;
@@ -355,7 +355,7 @@
     <div class="container">
         <!-- Login Section -->
         <div class="login-section active">
-            <h1>📚 Daily GK Quiz</h1>
+            <h1>📚 DEESAAT QUIZ</h1>
             <p class="subtitle">Learn something new every day!</p>
             
             <div class="pin-format-info">
@@ -382,21 +382,24 @@
             <button onclick="studentLogin()">Login as Student</button>
             
             <div class="toggle-mode">
-                Are you a teacher? <a onclick="showTeacherLogin()">Login here</a>
+                Are you TEJAPRATAP? <a onclick="showTeacherLogin()">Login here</a>
             </div>
         </div>
 
         <!-- Teacher Login Section -->
         <div class="teacher-login-section">
-            <h1>👨‍🏫 Teacher Login</h1>
+            <h1>👨‍🏫 TEJAPRATAP Login</h1>
             <p class="subtitle">Manage daily questions and view student responses</p>
+            <div class="success-msg" style="background: #e8f5e9; border-color: #4caf50;">
+                <strong>🌟 This website is managed by TEJAPRATAP</strong>
+            </div>
             
             <div class="input-group">
-                <label for="teacherPassword">🔐 Teacher Password:</label>
+                <label for="teacherPassword">🔐 TEJAPRATAP Password:</label>
                 <input type="password" id="teacherPassword" placeholder="Enter password">
             </div>
             
-            <button onclick="teacherLogin()">Login as Teacher</button>
+            <button onclick="teacherLogin()">Login as TEJAPRATAP</button>
             
             <div class="toggle-mode">
                 <a onclick="forgotPassword()">Forgot Password?</a>
@@ -419,7 +422,7 @@
 
         <!-- Teacher Section -->
         <div class="teacher-section">
-            <h2>👨‍🏫 Teacher Dashboard</h2>
+            <h2>👨‍🏫 TEJAPRATAP Dashboard</h2>
             
             <div class="tab-buttons">
                 <button class="tab-btn active" onclick="switchTab('questions')">Questions</button>
@@ -441,7 +444,7 @@
                         <textarea id="yesterdayAnswer" placeholder="Enter answer to yesterday's question..."></textarea>
                     </div>
                     
-                    <button onclick="postQuestion()">Post Question</button>
+                    <button onclick="submitQuestion()">Post Question</button>
                 </div>
                 
                 <div id="teacherContent"></div>
@@ -510,7 +513,7 @@
         // ============ CHANGE 1: Fetch questions from API ============
         let questions = [];
         
-        fetch("https://deesat-quiz.onrender.com/questions")
+        fetch("https://deesaat-quizs.onrender.com")
             .then(res => res.json())
             .then(data => {
                 questions = data;
@@ -739,16 +742,75 @@
         }
 
         // ============ CHANGE 2: Post question to server ============
-        function postQuestion() {
-            const questionText = document.getElementById('newQuestion').value.trim();
-            const yesterdayAnswer = document.getElementById('yesterdayAnswer').value.trim();
+       function postQuestion() {
+  const questionText = document.getElementById("newQuestion").value.trim();
+  const yesterdayAnswer = document.getElementById("yesterdayAnswer").value.trim();
+
+  if (!questionText) {
+    alert("Please enter a question!");
+    return;
+  }
+
+  fetch("https://deesaat-quizs.onrender.com/questions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      question: questionText,
+      answer: yesterdayAnswer || null
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert("Question posted successfully!");
+      console.log(data);
+      document.getElementById("newQuestion").value = "";
+      document.getElementById("yesterdayAnswer").value = "";
+    })
+    .catch(err => {
+      console.error("Server error:", err);
+      alert("Server error. Check console.");
+    });
+}
             
-            if (!questionText) {
-                alert('Please enter a question!');
-                return;
-            }
+            // Add new question
             
-            fetch("https://deesat-quiz.onrender.com/questions", {
+                fetch("https://deesaat-quizs.onrender.com/questions", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    question: questionText,
+    answer: yesterdayAnswer || null
+  })
+})
+.then(res => res.json())
+.then(data => {
+  alert("Question posted successfully!");
+  console.log(data);
+})
+.catch(err => {
+  console.error("Server error:", err);
+  alert("Server error. Check console.");
+});
+            
+            
+            // Save to localStorage
+         // Try to post to server (optional, doesn't block if server is down)
+fetch("https://deesaat-quizs.onrender.com", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    question: questionText,
+    answer: yesterdayAnswer || null
+  })
+})
+          
+            
+            // Try to post to server (optional, doesn't block if server is down)
+            fetch("https://deesaat-quizs.onrender.coms", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -758,31 +820,54 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.success) {
-                        // Update yesterday's question answer if provided
-                        if (yesterdayAnswer && questions.length > 0) {
-                            questions[questions.length - 1].answer = yesterdayAnswer;
-                        }
-                        
-                        // Add new question
-                        questions.push({
-                            id: Date.now(),
-                            question: questionText,
-                            answer: null,
-                            date: new Date().toLocaleString()
-                        });
-                        
-                        document.getElementById('newQuestion').value = '';
-                        document.getElementById('yesterdayAnswer').value = '';
-                        alert('Question posted successfully!');
-                        displayTeacherView();
-                        displayStudentView();
-                    }
+                    console.log('Posted to server:', data);
+                })
+                .catch(err => {
+                    console.log('Server posting failed (continuing locally):', err);
                 });
+            
+            // Clear inputs and refresh display
+            document.getElementById('newQuestion').value = '';
+            document.getElementById('yesterdayAnswer').value = '';
+            
+            alert('Question posted successfully!');
+            
+            // Refresh both views
+            displayTeacherView();
+            displayStudentView();
         }
 
         function submitAnswer(questionId) {
-            const answer = document.getElementById('answer-' + questionId).value.trim();
+            function submitQuestion() {
+  const questionText = document.getElementById("newQuestion").value;
+  const yesterdayAnswer = document.getElementById("yesterdayAnswer").value;
+
+  if (!questionText) {
+    alert("Question cannot be empty!");
+    return;
+  }
+
+  fetch("https://deesaat-quizs.onrender.com/questions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      question: questionText,
+      answer: yesterdayAnswer || null
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("Question saved!");
+    document.getElementById("newQuestion").value = "";
+    document.getElementById("yesterdayAnswer").value = "";
+  })
+  .catch(err => {
+    alert("Server error");
+    console.log(err);
+  });
+}
             
             if (!answer) {
                 alert('Please write your answer!');
@@ -943,7 +1028,7 @@
             if (mediaFiles.length > 0) {
                 const latestMedia = mediaFiles[mediaFiles.length - 1];
                 html += '<div class="media-box">';
-                html += '<h3>🎵 Latest Media from Teacher</h3>';
+                html += '<h3>🎵 Latest Media from TEJAPRATAP</h3>';
                 html += '<div style="color: #999; font-size: 13px; margin: 8px 0;">📅 ' + latestMedia.date + '</div>';
                 html += '<h4>📎 ' + latestMedia.fileName + '</h4>';
                 
@@ -954,7 +1039,7 @@
                 }
                 
                 html += '<div class="opinion-box">';
-                html += '<strong>Teacher\'s Opinion:</strong><br>';
+                html += '<strong>TEJAPRATAP\'s Opinion:</strong><br>';
                 html += latestMedia.opinion;
                 html += '</div>';
                 html += '</div>';
@@ -1056,17 +1141,3 @@
     </script>
 </body>
 </html>
-
-          
-  
-   
-    
-
-            
-           
-            
-     
-     
-             
-             
-           
